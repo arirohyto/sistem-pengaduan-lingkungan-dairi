@@ -1,0 +1,1 @@
+<?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/auth/register.blade.php ENDPATH**/ ?>

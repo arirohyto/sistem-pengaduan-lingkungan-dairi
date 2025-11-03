@@ -1,9 +1,9 @@
-@extends('layouts.app')
 
-@section('title', 'Beranda')
 
-@section('content')
-    @verbatim
+<?php $__env->startSection('title', 'Beranda'); ?>
+
+<?php $__env->startSection('content'); ?>
+    
 
         <div class="@container py-12 md:py-20">
             <div class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-xl items-center justify-center p-6 text-center"
@@ -30,4 +30,5 @@
                     </a>
                 </div>
             </div>
-        </div> @endverbatim @endsection
+        </div>  <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/pages/beranda.blade.php ENDPATH**/ ?>

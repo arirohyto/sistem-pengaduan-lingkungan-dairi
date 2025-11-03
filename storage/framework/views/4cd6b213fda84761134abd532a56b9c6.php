@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@yield('title', 'Sistem Pengaduan Pelanggaran Lingkungan Hidup dan Sampah Kabupaten Dairi')</title>
+    <title><?php echo $__env->yieldContent('title', 'Sistem Pengaduan Pelanggaran Lingkungan Hidup dan Sampah Kabupaten Dairi'); ?></title>
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -45,20 +45,20 @@
         <div class="layout-container flex h-full grow flex-col">
             <div class="flex flex-1 justify-center py-5">
                 <div class="layout-content-container flex flex-col w-full max-w-5xl flex-1 px-4 sm:px-6 lg:px-8">
-                    @include('layouts.navbar')
+                    <?php echo $__env->make('layouts.navbar', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
                     <main class="flex-grow">
-                        @yield('content')
+                        <?php echo $__env->yieldContent('content'); ?>
                     </main>
 
-                    @include('layouts.footer')
+                    <?php echo $__env->make('layouts.footer', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
                 </div>
             </div>
         </div>
     </div>
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 
 </body>
 
-</html>
+</html><?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/layouts/app.blade.php ENDPATH**/ ?>
