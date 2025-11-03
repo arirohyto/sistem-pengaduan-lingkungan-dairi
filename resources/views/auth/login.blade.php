@@ -1,4 +1,5 @@
-@extends('layouts.app') @section('title', 'Masuk') @section('content') <div
+@extends('layouts.app') @section('title', 'Masuk') @section('content') 
+<div
     class="flex flex-1 justify-center py-10 sm:py-16 md:py-20 px-4">
     <div class="layout-content-container flex flex-col max-w-md w-full"> <!-- Heading -->
         <div class="flex flex-col items-center mb-8">

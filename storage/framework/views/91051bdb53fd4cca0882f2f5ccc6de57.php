@@ -1,4 +1,5 @@
- <?php $__env->startSection('title', 'Masuk'); ?> <?php $__env->startSection('content'); ?> <div
+ <?php $__env->startSection('title', 'Masuk'); ?> <?php $__env->startSection('content'); ?> 
+<div
     class="flex flex-1 justify-center py-10 sm:py-16 md:py-20 px-4">
     <div class="layout-content-container flex flex-col max-w-md w-full"> <!-- Heading -->
         <div class="flex flex-col items-center mb-8">
