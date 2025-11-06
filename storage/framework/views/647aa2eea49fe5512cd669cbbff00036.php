@@ -18,7 +18,7 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center pt-4">
-                    <a href="#"
+                    <a href="<?php echo e(route('laporansaya')); ?>"
                         class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
                         <span class="truncate">Cek Laporan</span>
                     </a>
