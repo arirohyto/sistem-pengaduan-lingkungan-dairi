@@ -6,7 +6,7 @@
     <div class="max-w-4xl mx-auto px-4 md:px-0 py-8">
         <div class="flex items-center justify-between gap-3 mb-6">
             <h1 class="text-gray-900 dark:text-white text-4xl font-black tracking-tighter">Laporan Saya</h1>
-            {{-- (opsional) tombol cepat buat laporan --}} {{-- <a href="{{ route('reports.create') }}" class="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90">Buat Laporan</a> --}}
+            {{-- tombol cepat buat laporan --}} {{-- <a href="{{ route('reports.create') }}" class="h-10 px-4 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90">Buat Laporan</a> --}}
         </div>
         <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/50">
             <table class="w-full text-left">
@@ -27,7 +27,7 @@
                         <td class="px-6 py-4 text-sm"> <span
                                 class="inline-flex items-center px-3 py-1 text-xs font-bold text-yellow-800 bg-yellow-100 rounded-full">Pending</span>
                         </td>
-                        <td class="px-6 py-4"> <a href="#"
+                        <td class="px-6 py-4"> <a href="{{ route('detaillaporan', 'DLH-20240815-0001') }}"
                                 class="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors"
                                 title="Detail"> <span class="material-symbols-outlined">visibility</span> </a> </td>
                     </tr>

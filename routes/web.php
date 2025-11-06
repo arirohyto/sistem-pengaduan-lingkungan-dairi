@@ -26,6 +26,20 @@ Route::get('/laporansaya', function () {
     ]);
 })->name('laporansaya');
 
+Route::get('/laporan/{ticket}', function (string $ticket) {
+    return view('pages.detaillaporan', [
+        'authMode' => true,
+        'userName' => 'Ari Rohyto',
+        'ticket' => $ticket, // contoh: DLH-20240815-0001 atau 1
+        'data' => [
+            'lokasi' => 'Jl. Pahlawan No. 123, Sidikalang',
+            'deskripsi' => 'Tumpukan sampah ilegal di pinggir jalan selama 2 minggu. Baunya mengganggu dan membuat banyak lalat.',
+            'tanggal' => '15 Agustus 2024',
+            'status' => 'pending', // pending|diproses|selesai|ditolak
+        ],
+    ]);
+})->name('detaillaporan');
+
 Route::get('/test', function () {
     return 'Test OK';
 });
