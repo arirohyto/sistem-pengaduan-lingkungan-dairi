@@ -14,6 +14,10 @@ Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
+Route::get('/buatlaporan', function () {
+    return view('pages.buatlaporan');
+})->name('buatlaporan');
+
 Route::get('/test', function () {
     return 'Test OK';
 });
