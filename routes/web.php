@@ -1,45 +1,92 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
-Route::get('/', function () {
-    return view('pages.beranda');
-})->name('home');
+Route::view('/', 'pages.beranda')->name('home');
+Route::view('/login', 'auth.login')->name('login');
+Route::view('/register', 'auth.register')->name('register');
+Route::view('/laporan/buat', 'pages.buatlaporan')->name('reports.create');
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::get('/buatlaporan', function () {
-    return view('pages.buatlaporan');
-})->name('buatlaporan');
-
-Route::get('/laporansaya', function () {
-    return view('pages.laporansaya', [
-        'authMode' => true, // aktifkan mode user di navbar
-        'userName' => 'Ari Rohyto', // dummy dulu; nanti ganti dari Auth
+// Simpan laporan ke file JSON (mock)
+Route::post('/laporansaya', function (Request $request) {
+    // Validasi input
+    $validated = $request->validate([
+        'jenis_laporan' => 'required|in:sampah,lingkungan',
+        'lokasi' => 'required|string|max:120',
+        'deskripsi' => 'required|string|min:10',
+        'phone' => 'nullable|string|max:30',
+        'email' => 'nullable|email',
     ]);
-})->name('laporansaya');
 
+    $path = 'mock/reports.json';
+
+    // Buat file jika belum ada
+    if (!Storage::exists($path)) {
+        Storage::put($path, '[]');
+    }
+
+    // Ambil data existing
+    $allReports = json_decode(Storage::get($path), true) ?: [];
+
+    // Generate nomor tiket: DLH-YYYYMMDD-XXXX
+    $ticketNumber = 'DLH-' . now()->format('Ymd') . '-' . str_pad(count($allReports) + 1, 4, '0', STR_PAD_LEFT);
+
+    // Tambah laporan baru
+    $allReports[] = [
+        'ticket' => $ticketNumber,
+        'jenis' => $validated['jenis_laporan'],
+        'kecamatan' => $validated['kecamatan'],
+        'deskripsi' => $validated['deskripsi'],
+        'phone' => $validated['phone'] ?? null,
+        'email' => $validated['email'] ?? null,
+        'status' => 'submitted',
+        'created_at' => now()->toDateTimeString(),
+    ];
+
+    // Simpan ke file
+    Storage::put($path, json_encode($allReports, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+    return redirect()
+        ->route('reports.mine')
+        ->with('ok', "Laporan berhasil terkirim. Nomor Tiket: $ticketNumber");
+})->name('reports.store');
+
+// Daftar laporan (mock) → Laporan Saya
+Route::get('/laporan', function () {
+    $path = 'mock/reports.json';
+    $allReports = Storage::exists($path) 
+        ? json_decode(Storage::get($path), true) 
+        : [];
+
+    // Urutkan terbaru di atas
+    $allReports = array_reverse($allReports);
+
+    return view('pages.laporansaya', [
+        'authMode' => true,
+        'userName' => 'Ari Rohyto',
+        'reports' => $allReports,
+    ]);
+})->name('reports.mine');
+
+// Detail laporan (mock)
 Route::get('/laporan/{ticket}', function (string $ticket) {
+    $path = 'mock/reports.json';
+    $allReports = Storage::exists($path) 
+        ? json_decode(Storage::get($path), true) 
+        : [];
+
+    // Cari laporan berdasarkan ticket
+    $report = collect($allReports)->firstWhere('ticket', $ticket);
+
+    // Jika tidak ditemukan, tampilkan 404
+    abort_if(!$report, 404);
+
     return view('pages.detaillaporan', [
         'authMode' => true,
         'userName' => 'Ari Rohyto',
-        'ticket' => $ticket, // contoh: DLH-20240815-0001 atau 1
-        'data' => [
-            'lokasi' => 'Jl. Pahlawan No. 123, Sidikalang',
-            'deskripsi' => 'Tumpukan sampah ilegal di pinggir jalan selama 2 minggu. Baunya mengganggu dan membuat banyak lalat.',
-            'tanggal' => '15 Agustus 2024',
-            'status' => 'pending', // pending|diproses|selesai|ditolak
-        ],
+        'ticket' => $ticket,
+        'data' => $report,
     ]);
-})->name('detaillaporan');
-
-Route::get('/test', function () {
-    return 'Test OK';
-});
+})->name('reports.show');

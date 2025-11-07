@@ -18,11 +18,11 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center pt-4">
-                    <a href="<?php echo e(route('laporansaya')); ?>"
+                    <a href="<?php echo e(route('reports.mine')); ?>"
                         class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
                         <span class="truncate">Cek Laporan</span>
                     </a>
-                    <a href="<?php echo e(route('buatlaporan')); ?>"
+                    <a href="<?php echo e(route('reports.create')); ?>"
                         class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white dark:bg-gray-200 text-primary dark:text-primary font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 dark:hover:bg-gray-300 transition-colors text-base">
                         <span class="truncate">Buat Laporan Baru</span>
                     </a>
