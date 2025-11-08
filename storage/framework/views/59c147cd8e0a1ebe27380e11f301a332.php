@@ -67,11 +67,13 @@
                                     <td class="h-[72px] px-4 py-2">
                                         <div class="flex items-center gap-2">
                                             <button
-                                                class="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                                class="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                data-action="edit-lokasi">
                                                 <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
                                             </button>
                                             <button
-                                                class="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                                class="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800"
+                                                data-action="hapus-lokasi">
                                                 <span class="material-symbols-outlined"
                                                     style="font-size: 20px;">delete</span>
                                             </button>
@@ -150,6 +152,142 @@
                 // Tombol Simpan hanya menutup (karena frontend-only)
                 btnSimpan?.addEventListener('click', () => {
                     alert('Fitur simpan akan diaktifkan saat backend siap.');
+                    closeModal();
+                });
+            });
+        </script>
+    <?php $__env->stopPush(); ?>
+    <!-- Modal Edit Lokasi -->
+    <div id="editLokasiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
+            <h2 class="text-xl font-bold mb-4">Edit Lokasi</h2>
+            <hr class="mb-4">
+
+            <!-- Form (dummy) -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lokasi</label>
+                <input type="text" id="namaLokasi"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Contoh: TPS Sidikalang">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                <textarea id="deskripsiLokasi" rows="3"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Deskripsi lokasi..."></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button id="btnBatalEdit"
+                    class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition-colors">
+                    Batal
+                </button>
+                <button id="btnSimpanEdit"
+                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <?php $__env->startPush('scripts'); ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('editLokasiModal');
+                const btnBatal = document.getElementById('btnBatalEdit');
+                const btnSimpan = document.getElementById('btnSimpanEdit');
+
+                // Buka modal via tombol edit (delegasi event)
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('[data-action="edit-lokasi"]')) {
+                        modal.classList.remove('hidden');
+                    }
+                });
+
+                // Tutup modal
+                function closeModal() {
+                    modal.classList.add('hidden');
+                }
+
+                btnBatal?.addEventListener('click', closeModal);
+                modal?.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') closeModal();
+                });
+
+                // Simpan (dummy)
+                btnSimpan?.addEventListener('click', () => {
+                    const nama = document.getElementById('namaLokasi').value;
+                    const deskripsi = document.getElementById('deskripsiLokasi').value;
+                    alert(`Lokasi berhasil diperbarui:\n\nNama: ${nama}\nDeskripsi: ${deskripsi}`);
+                    closeModal();
+                });
+            });
+        </script>
+    <?php $__env->stopPush(); ?>
+    <!-- Modal Konfirmasi Hapus -->
+    <div id="hapusLokasiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
+            <div class="flex justify-between items-start mb-4">
+                <div class="size-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-red-500">delete</span>
+                </div>
+                <button id="btnCloseHapus" class="text-gray-500 hover:text-gray-700">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <h2 class="text-xl font-bold mb-2">Hapus Lokasi</h2>
+            <p class="text-gray-600 mb-6">Apakah anda yakin untuk menghapus lokasi ini?</p>
+
+            <div class="flex justify-end gap-2">
+                <button id="btnBatalHapus"
+                    class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors">
+                    Batal
+                </button>
+                <button id="btnKonfirmasiHapus"
+                    class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                    Hapus
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <?php $__env->startPush('scripts'); ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('hapusLokasiModal');
+                const btnBatal = document.getElementById('btnBatalHapus');
+                const btnKonfirmasi = document.getElementById('btnKonfirmasiHapus');
+                const btnClose = document.getElementById('btnCloseHapus');
+
+                // Buka modal via tombol hapus (delegasi event)
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('[data-action="hapus-lokasi"]')) {
+                        modal.classList.remove('hidden');
+                    }
+                });
+
+                // Tutup modal
+                function closeModal() {
+                    modal.classList.add('hidden');
+                }
+
+                btnBatal?.addEventListener('click', closeModal);
+                btnClose?.addEventListener('click', closeModal);
+                modal?.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') closeModal();
+                });
+
+                // Simpan (dummy)
+                btnKonfirmasi?.addEventListener('click', () => {
+                    alert('Lokasi berhasil dihapus!');
                     closeModal();
                 });
             });

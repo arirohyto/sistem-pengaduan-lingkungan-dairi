@@ -20,6 +20,10 @@ Route::get('/admin/lokasi/create', function () {
     return view('admin.lokasi.index'); // atau arahkan ke index dulu
 })->name('admin.lokasi.create');
 
+Route::get('/admin/laporan/{id}', function ($id) {
+    return view('admin.laporan.show', compact('id'));
+})->name('admin.laporan.show');
+
 // Simpan laporan ke file JSON (mock)
 Route::post('/laporansaya', function (Request $request) {
     // Validasi input
