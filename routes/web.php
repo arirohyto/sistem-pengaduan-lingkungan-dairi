@@ -7,7 +7,18 @@ use Illuminate\Support\Facades\Storage;
 Route::view('/', 'pages.beranda')->name('home');
 Route::view('/login', 'auth.login')->name('login');
 Route::view('/register', 'auth.register')->name('register');
-Route::view('/laporan/buat', 'pages.buatlaporan')->name('reports.create');
+Route::view('buatlaporan', 'pages.buatlaporan')->name('reports.create');
+Route::get('/admin/dashboard', function () {
+    return view('admin.dashboard');
+})->name('admin.dashboard');
+
+Route::get('/admin/lokasi', function () {
+    return view('admin.lokasi.index');
+})->name('admin.lokasi.index');
+
+Route::get('/admin/lokasi/create', function () {
+    return view('admin.lokasi.index'); // atau arahkan ke index dulu
+})->name('admin.lokasi.create');
 
 // Simpan laporan ke file JSON (mock)
 Route::post('/laporansaya', function (Request $request) {

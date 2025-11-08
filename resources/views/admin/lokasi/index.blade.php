@@ -1,0 +1,156 @@
+@extends('layouts.admin')
+
+@section('title', 'Manajemen Lokasi - SPPLH Dairi')
+
+@section('content')
+    <!-- Main Content -->
+    <main class="flex-1 flex-col p-8">
+        <div class="w-full max-w-7xl mx-auto">
+            <!-- Heading & Button -->
+            <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                <p class="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+                    Manajemen Lokasi
+                </p>
+                <button id="btnOpenModal"
+                    class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] hover:bg-green-700 transition-colors">
+                    <span class="material-symbols-outlined" style="font-size: 20px;">add</span>
+                    <span class="truncate">Tambah Lokasi Baru</span>
+                </button>
+            </div>
+
+            <!-- Table -->
+            <div class="@container">
+                <div
+                    class="flex overflow-hidden rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-zinc-900">
+                    <table class="flex-1">
+                        <thead class="bg-gray-50 dark:bg-zinc-800">
+                            <tr>
+                                <th
+                                    class="w-[35%] px-4 py-3 text-left text-gray-800 dark:text-gray-300 text-sm font-medium">
+                                    Nama Lokasi</th>
+                                <th
+                                    class="w-[45%] px-4 py-3 text-left text-gray-800 dark:text-gray-300 text-sm font-medium">
+                                    Deskripsi</th>
+                                <th
+                                    class="w-[20%] px-4 py-3 text-left text-gray-800 dark:text-gray-300 text-sm font-medium">
+                                    Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            @php
+                                $lokasis = [
+                                    [
+                                        'nama' => 'TPS Sidikalang',
+                                        'deskripsi' => 'Tempat Pembuangan Sementara di pusat kota Sidikalang.',
+                                    ],
+                                    [
+                                        'nama' => 'Sungai Lae Pendaroh',
+                                        'deskripsi' => 'Area sungai yang sering dijadikan lokasi pembuangan ilegal.',
+                                    ],
+                                    [
+                                        'nama' => 'Pasar Induk',
+                                        'deskripsi' => 'Area pengelolaan sampah di sekitar Pasar Induk.',
+                                    ],
+                                ];
+                            @endphp
+
+                            @foreach ($lokasis as $lokasi)
+                                <tr>
+                                    <td class="h-[72px] px-4 py-2 text-gray-900 dark:text-white text-sm font-normal">
+                                        {{ $lokasi['nama'] }}
+                                    </td>
+                                    <td class="h-[72px] px-4 py-2 text-gray-500 dark:text-gray-400 text-sm font-normal">
+                                        {{ $lokasi['deskripsi'] }}
+                                    </td>
+                                    <td class="h-[72px] px-4 py-2">
+                                        <div class="flex items-center gap-2">
+                                            <button
+                                                class="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                                <span class="material-symbols-outlined" style="font-size: 20px;">edit</span>
+                                            </button>
+                                            <button
+                                                class="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                                                <span class="material-symbols-outlined"
+                                                    style="font-size: 20px;">delete</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    </div>
+
+    <!-- Modal Tambah Lokasi -->
+    <div id="tambahLokasiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 shadow-xl">
+            <h2 class="text-xl font-bold mb-4">Tambah Lokasi</h2>
+            <hr class="mb-4">
+
+            <!-- Form hanya untuk tampilan (tidak disubmit) -->
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lokasi</label>
+                <input type="text"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Contoh: TPS Sidikalang">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                <textarea rows="3"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    placeholder="Deskripsi lokasi..."></textarea>
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button id="btnBatal"
+                    class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition-colors">
+                    Batal
+                </button>
+                <button id="btnSimpan"
+                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const modal = document.getElementById('tambahLokasiModal');
+                const btnOpen = document.getElementById('btnOpenModal');
+                const btnBatal = document.getElementById('btnBatal');
+                const btnSimpan = document.getElementById('btnSimpan');
+
+                // Buka modal
+                btnOpen?.addEventListener('click', () => {
+                    modal.classList.remove('hidden');
+                });
+
+                // Tutup modal
+                function closeModal() {
+                    modal.classList.add('hidden');
+                }
+
+                btnBatal?.addEventListener('click', closeModal);
+                modal?.addEventListener('click', (e) => {
+                    if (e.target === modal) closeModal();
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') closeModal();
+                });
+
+                // Tombol Simpan hanya menutup (karena frontend-only)
+                btnSimpan?.addEventListener('click', () => {
+                    alert('Fitur simpan akan diaktifkan saat backend siap.');
+                    closeModal();
+                });
+            });
+        </script>
+    @endpush
+@endsection
