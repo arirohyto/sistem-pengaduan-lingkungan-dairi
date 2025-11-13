@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title><?php echo $__env->yieldContent('title', 'Admin - SPPLH Dairi'); ?></title>
 
-    <!-- Tailwind via CDN (untuk dev cepat) -->
+    <!-- Tailwind via CDN -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
@@ -63,7 +63,7 @@
                     <span class="material-symbols-outlined">shield_person</span>
                     <p class="text-sm font-medium">Admin - <?php echo e(auth()->user()?->name ?? 'Ari Rohyto'); ?></p>
                 </div>
-                <form method="POST" action="#" class="flex items-center gap-2">
+                <form method="POST" action="<?php echo e(route('logout')); ?>" class="flex items-center gap-2">
                     <?php echo csrf_field(); ?>
                     <button type="submit" class="flex items-center gap-2 p-2 rounded-lg hover:bg-white/20">
                         <span class="material-symbols-outlined">logout</span>

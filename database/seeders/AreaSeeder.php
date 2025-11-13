@@ -2,43 +2,66 @@
 
 namespace Database\Seeders;
 
-use App\Models\Area;
 use Illuminate\Database\Seeder;
+use App\Models\Area;
 
 class AreaSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        // Kabupaten Dairi
-        $dairi = Area::create([
-            'name' => 'Kabupaten Dairi',
-            'level' => 'kabupaten',
-        ]);
+        // Cek apakah Kabupaten Dairi sudah ada
+        $dairi = Area::where('name', 'Kabupaten Dairi')->where('level', 'kabupaten')->first();
 
-        // Kecamatan-kecamatan di Dairi
+        if (!$dairi) {
+            // Buat Kabupaten Dairi jika belum ada
+            $dairi = Area::create([
+                'name' => 'Kabupaten Dairi',
+                'level' => 'kabupaten',
+                'parent_id' => null,
+            ]);
+            echo " Created Kabupaten Dairi\n";
+        } else {
+            echo " Kabupaten Dairi already exists\n";
+        }
+
+        // 15 Kecamatan lengkap di Dairi
         $kecamatans = [
-            'Sidikalang' => ['Siempat Rube', 'Pasar Sidikalang', 'Tanjung Beringin'],
-            'Parbuluan' => ['Parbuluan I', 'Parbuluan II', 'Parbuluan III'],
-            'Silima Pungga-Pungga' => ['Silima I', 'Silima II'],
-            'STM Hilir' => ['Salak', 'Tanjung Muda'],
-            'Sumbul' => ['Sumbul', 'Gunung Meriah'],
+            'Berampu',
+            'Gunung Sitember',
+            'Lae Parira',
+            'Parbuluan',
+            'Pegagan Hilir',
+            'Sidikalang',
+            'Siempat Nempu',
+            'Siempat Nempu Hilir',
+            'Siempat Nempu Hulu',
+            'Silahisabungan',
+            'Silima Pungga Pungga',
+            'Sitinjo',
+            'Sumbul',
+            'Tanah Pinem',
+            'Tigalingga'
         ];
 
-        foreach ($kecamatans as $kecName => $desas) {
-            $kec = Area::create([
-                'name' => $kecName,
-                'level' => 'kecamatan',
-                'parent_id' => $dairi->id,
-            ]);
+        foreach ($kecamatans as $kecamatan) {
+            // Cek apakah kecamatan sudah ada
+            $existing = Area::where('name', $kecamatan)
+                ->where('level', 'kecamatan')
+                ->where('parent_id', $dairi->id)
+                ->first();
 
-            // Desa/Kelurahan
-            foreach ($desas as $desa) {
+            if (!$existing) {
                 Area::create([
-                    'name' => $desa,
-                    'level' => 'desa',
-                    'parent_id' => $kec->id,
+                    'name' => $kecamatan,
+                    'level' => 'kecamatan',
+                    'parent_id' => $dairi->id,
                 ]);
+                echo " Created kecamatan: {$kecamatan}\n";
+            } else {
+                echo " Kecamatan {$kecamatan} already exists\n";
             }
         }
+
+        echo "🎉 Area seeder completed successfully!\n";
     }
 }

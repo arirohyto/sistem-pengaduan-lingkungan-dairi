@@ -8,6 +8,7 @@ use App\Models\Lokasi;
 use App\Models\RiwayatPerubahanStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
@@ -54,28 +55,39 @@ class LaporanController extends Controller
 
     public function updateStatus(Request $request)
     {
-        $validated = $request->validate([
-            'report_id' => 'required|exists:laporan,id',
-            'status' => 'required|in:pending,diproses,selesai,ditolak',
-            'notes' => 'nullable|string',
-        ]);
+        DB::beginTransaction();
 
-        $laporan = Laporan::findOrFail($validated['report_id']);
-        $oldStatus = $laporan->status;
+        try {
+            $validated = $request->validate([
+                'report_id' => 'required|exists:laporan,id',
+                'status' => 'required|in:pending,diproses,selesai,ditolak',
+                'notes' => 'nullable|string|max:500',
+            ]);
 
-        // Update status
-        $laporan->update(['status' => $validated['status']]);
+            $laporan = Laporan::findOrFail($validated['report_id']);
+            $oldStatus = $laporan->status;
 
-        // Record history
-        RiwayatPerubahanStatus::create([
-            'report_id' => $laporan->id,
-            'from_status' => $oldStatus,
-            'to_status' => $validated['status'],
-            'note' => $validated['notes'] ?? null,
-            'changed_by' => Auth::id(),
-        ]);
+            // Update status
+            $laporan->update(['status' => $validated['status']]);
 
-        return back()->with('success', 'Status laporan berhasil diubah!');
+            // Record history - Set created_at manual 
+            RiwayatPerubahanStatus::create([
+                'report_id' => $laporan->id,
+                'from_status' => $oldStatus,
+                'to_status' => $validated['status'],
+                'note' => $validated['notes'] ?? null,
+                'changed_by' => Auth::id(),
+                'created_at' => now(),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('admin.dashboard')->with('success', 'Status laporan berhasil diubah dari ' . $oldStatus . ' menjadi ' . $validated['status'] . '!');
+            
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('admin.dashboard')->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function getFilterData()

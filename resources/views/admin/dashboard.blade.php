@@ -7,6 +7,29 @@
     <main class="flex-1 flex flex-col">
         <!-- Page Content Area -->
         <div class="p-6">
+            <!-- Error/Success Messages -->
+            @if (session('success'))
+                <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="flex flex-wrap justify-between gap-3 mb-6">
                 <p class="text-zinc-900 dark:text-white text-3xl font-bold leading-tight tracking-tight">Dashboard Admin</p>
             </div>
@@ -29,7 +52,7 @@
                 <div class="bg-white dark:bg-zinc-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
                     <div class="flex items-center justify-between">
                         <div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Pending</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Menunggu</p>
                             <p class="text-2xl font-bold text-yellow-600">{{ $stats['pending'] ?? 0 }}</p>
                         </div>
                         <div class="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-lg">
@@ -84,10 +107,14 @@
                             <tr>
                                 <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Kode</th>
                                 <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Judul</th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Pelapor</th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Lokasi</th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Tanggal</th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Status</th>
+                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Pelapor
+                                </th>
+                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Lokasi
+                                </th>
+                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Tanggal
+                                </th>
+                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Status
+                                </th>
                                 <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Aksi</th>
                             </tr>
                         </thead>
@@ -191,28 +218,127 @@
     @push('scripts')
         <script>
             function openStatusModal(reportId, currentStatus) {
-                document.getElementById('reportIdInput').value = reportId;
-                document.getElementById('statusSelect').value = currentStatus;
-                document.getElementById('updateStatusModal').classList.remove('hidden');
+                console.log('🔄 Attempting to open modal for report:', reportId, 'status:', currentStatus);
+
+                setTimeout(function() {
+                    try {
+                        const reportInput = document.getElementById('reportIdInput');
+                        const statusSelect = document.getElementById('statusSelect');
+                        const modal = document.getElementById('updateStatusModal');
+
+                        console.log('🔍 Elements found:');
+                        console.log('- reportInput:', reportInput);
+                        console.log('- statusSelect:', statusSelect);
+                        console.log('- modal:', modal);
+
+                        if (!reportInput) {
+                            console.error('❌ Element reportIdInput not found');
+                            alert('Error: Form input tidak ditemukan. Silakan refresh halaman.');
+                            return;
+                        }
+
+                        if (!statusSelect) {
+                            console.error('❌ Element statusSelect not found');
+                            alert('Error: Status select tidak ditemukan. Silakan refresh halaman.');
+                            return;
+                        }
+
+                        if (!modal) {
+                            console.error('❌ Element updateStatusModal not found');
+                            alert('Error: Modal tidak ditemukan. Silakan refresh halaman.');
+                            return;
+                        }
+
+                        // Set values
+                        reportInput.value = reportId;
+                        statusSelect.value = currentStatus;
+
+                        // Show modal
+                        modal.classList.remove('hidden');
+
+                        console.log('✅ Modal opened successfully');
+                        console.log('📝 Report ID set to:', reportInput.value);
+                        console.log('📝 Status set to:', statusSelect.value);
+
+                    } catch (error) {
+                        console.error('💥 Error in openStatusModal:', error);
+                        alert('Terjadi kesalahan: ' + error.message);
+                    }
+                }, 100); // Wait 100ms
             }
 
             function closeStatusModal() {
-                document.getElementById('updateStatusModal').classList.add('hidden');
+                console.log('🔄 Attempting to close modal');
+
+                try {
+                    const modal = document.getElementById('updateStatusModal');
+                    if (modal) {
+                        modal.classList.add('hidden');
+                        console.log('✅ Modal closed successfully');
+                    } else {
+                        console.error('❌ Modal not found when trying to close');
+                    }
+                } catch (error) {
+                    console.error('💥 Error in closeStatusModal:', error);
+                }
             }
 
-            // Close modal when clicking outside
-            document.getElementById('updateStatusModal')?.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeStatusModal();
-                }
+            // DOM Ready
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('🚀 Dashboard JavaScript loaded');
+
+                // Check if all required elements exist
+                setTimeout(function() {
+                    const modal = document.getElementById('updateStatusModal');
+                    const reportInput = document.getElementById('reportIdInput');
+                    const statusSelect = document.getElementById('statusSelect');
+
+                    console.log('🔍 DOM Check:');
+                    console.log('- Modal exists:', !!modal);
+                    console.log('- Report input exists:', !!reportInput);
+                    console.log('- Status select exists:', !!statusSelect);
+
+                    if (!modal || !reportInput || !statusSelect) {
+                        console.error('❌ Some required elements are missing!');
+                        console.log('🔧 Please check if modal HTML is properly rendered');
+                    } else {
+                        console.log('✅ All required elements found');
+                    }
+
+                    // Count edit buttons
+                    const editButtons = document.querySelectorAll('button[onclick*="openStatusModal"]');
+                    console.log('🔘 Found edit buttons:', editButtons.length);
+
+                    // Add backup event listeners
+                    editButtons.forEach((button, index) => {
+                        button.addEventListener('click', function(e) {
+                            console.log(`🖱️ Edit button ${index} clicked via event listener`);
+                        });
+                    });
+
+                }, 500); // Wait 500ms for full DOM render
+
+                // Close modal when clicking outside
+                document.addEventListener('click', function(e) {
+                    const modal = document.getElementById('updateStatusModal');
+                    if (modal && e.target === modal) {
+                        closeStatusModal();
+                    }
+                });
+
+                // Close modal with Escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        closeStatusModal();
+                    }
+                });
             });
 
-            // Close modal with Escape key
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeStatusModal();
-                }
-            });
+            // Test function - call this in console to debug
+            function testModal() {
+                console.log('🧪 Testing modal elements...');
+                openStatusModal(999, 'pending');
+            }
         </script>
     @endpush
 @endsection

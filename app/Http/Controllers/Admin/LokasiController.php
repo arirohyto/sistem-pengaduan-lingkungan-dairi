@@ -12,9 +12,8 @@ class LokasiController extends Controller
     public function index()
     {
         $lokasis = Lokasi::with('area')->latest()->paginate(20);
-        $areas = Area::kecamatan()->get();
 
-        return view('admin.lokasi.index', compact('lokasis', 'areas'));
+        return view('admin.lokasi.index', compact('lokasis'));
     }
 
     public function store(Request $request)
@@ -22,17 +21,19 @@ class LokasiController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:150',
             'description' => 'nullable|string',
-            'address' => 'nullable|string|max:255',
-            'area_id' => 'required|exists:area,id',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
-            'type' => 'required|in:tps,sungai,pasar,kawasan,lainnya',
             'is_active' => 'boolean',
         ]);
 
+        // Set default values
+        $validated['area_id'] = 1; // Default ke Kabupaten Dairi
+        $validated['type'] = 'kawasan';
+        $validated['address'] = null;
+        $validated['latitude'] = null;
+        $validated['longitude'] = null;
+
         Lokasi::create($validated);
 
-        return back()->with('success', 'Lokasi berhasil ditambahkan!');
+        return back()->with('success', 'Kecamatan berhasil ditambahkan!');
     }
 
     public function update(Request $request, $id)
@@ -40,18 +41,13 @@ class LokasiController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:150',
             'description' => 'nullable|string',
-            'address' => 'nullable|string|max:255',
-            'area_id' => 'required|exists:area,id',
-            'latitude' => 'nullable|numeric',
-            'longitude' => 'nullable|numeric',
-            'type' => 'required|in:tps,sungai,pasar,kawasan,lainnya',
             'is_active' => 'boolean',
         ]);
 
         $lokasi = Lokasi::findOrFail($id);
         $lokasi->update($validated);
 
-        return back()->with('success', 'Lokasi berhasil diupdate!');
+        return back()->with('success', 'Kecamatan berhasil diupdate!');
     }
 
     public function destroy($id)
