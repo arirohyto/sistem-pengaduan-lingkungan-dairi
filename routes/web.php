@@ -1,107 +1,87 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\LaporanController as AdminLaporanController;
+use App\Http\Controllers\Admin\LokasiController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\LaporanController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 
-Route::view('/', 'pages.beranda')->name('home');
-Route::view('/login', 'auth.login')->name('login');
-Route::view('/register', 'auth.register')->name('register');
-Route::view('buatlaporan', 'pages.buatlaporan')->name('reports.create');
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+/*
+|--------------------------------------------------------------------------
+| Public Routes (No Authentication Required)
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/admin/lokasi', function () {
-    return view('admin.lokasi.index');
-})->name('admin.lokasi.index');
+Route::get('/', [BerandaController::class, 'index'])->name('home');
 
-Route::get('/admin/lokasi/create', function () {
-    return view('admin.lokasi.index'); // atau arahkan ke index dulu
-})->name('admin.lokasi.create');
+/*
+|--------------------------------------------------------------------------
+| Guest Routes (Only for non-authenticated users)
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/admin/laporan/{id}', function ($id) {
-    return view('admin.laporan.show', compact('id'));
-})->name('admin.laporan.show');
+Route::middleware('guest')->group(function () {
+    // Login
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
 
-// Simpan laporan ke file JSON (mock)
-Route::post('/laporansaya', function (Request $request) {
-    // Validasi input
-    $validated = $request->validate([
-        'jenis_laporan' => 'required|in:sampah,lingkungan',
-        'lokasi' => 'required|string|max:120',
-        'deskripsi' => 'required|string|min:10',
-        'phone' => 'nullable|string|max:30',
-        'email' => 'nullable|email',
-    ]);
+    // Register
+    Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
+});
 
-    $path = 'mock/reports.json';
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes (For logged-in users)
+|--------------------------------------------------------------------------
+*/
 
-    // Buat file jika belum ada
-    if (!Storage::exists($path)) {
-        Storage::put($path, '[]');
-    }
+Route::middleware('auth')->group(function () {
+    // Logout
+    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-    // Ambil data existing
-    $allReports = json_decode(Storage::get($path), true) ?: [];
+    // Laporan - Create & Store
+    Route::get('/laporan/buat', [LaporanController::class, 'create'])->name('laporan.create');
+    Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
 
-    // Generate nomor tiket: DLH-YYYYMMDD-XXXX
-    $ticketNumber = 'DLH-' . now()->format('Ymd') . '-' . str_pad(count($allReports) + 1, 4, '0', STR_PAD_LEFT);
+    // Laporan - Index & Show
+    Route::get('/laporan/saya', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/{code}', [LaporanController::class, 'show'])->name('laporan.show');
+});
 
-    // Tambah laporan baru
-    $allReports[] = [
-        'ticket' => $ticketNumber,
-        'jenis' => $validated['jenis_laporan'],
-        'kecamatan' => $validated['kecamatan'],
-        'deskripsi' => $validated['deskripsi'],
-        'phone' => $validated['phone'] ?? null,
-        'email' => $validated['email'] ?? null,
-        'status' => 'submitted',
-        'created_at' => now()->toDateTimeString(),
-    ];
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (Only for admin role)
+|--------------------------------------------------------------------------
+*/
 
-    // Simpan ke file
-    Storage::put($path, json_encode($allReports, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-    return redirect()
-        ->route('reports.mine')
-        ->with('ok', "Laporan berhasil terkirim. Nomor Tiket: $ticketNumber");
-})->name('reports.store');
+    // Laporan Management
+    Route::get('/laporan', [AdminLaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/{id}', [AdminLaporanController::class, 'show'])->name('laporan.show');
+    Route::patch('/laporan/status', [AdminLaporanController::class, 'updateStatus'])->name('laporan.updateStatus');
+    Route::delete('/laporan/{id}', [AdminLaporanController::class, 'destroy'])->name('laporan.destroy');
 
-// Daftar laporan (mock) → Laporan Saya
-Route::get('/laporan', function () {
-    $path = 'mock/reports.json';
-    $allReports = Storage::exists($path) 
-        ? json_decode(Storage::get($path), true) 
-        : [];
+    // Lokasi Management
+    Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi.index');
+    Route::post('/lokasi', [LokasiController::class, 'store'])->name('lokasi.store');
+    Route::put('/lokasi/{id}', [LokasiController::class, 'update'])->name('lokasi.update');
+    Route::delete('/lokasi/{id}', [LokasiController::class, 'destroy'])->name('lokasi.destroy');
+});
 
-    // Urutkan terbaru di atas
-    $allReports = array_reverse($allReports);
+/*
+|--------------------------------------------------------------------------
+| Fallback Route (404)
+|--------------------------------------------------------------------------
+*/
 
-    return view('pages.laporansaya', [
-        'authMode' => true,
-        'userName' => 'Ari Rohyto',
-        'reports' => $allReports,
-    ]);
-})->name('reports.mine');
-
-// Detail laporan (mock)
-Route::get('/laporan/{ticket}', function (string $ticket) {
-    $path = 'mock/reports.json';
-    $allReports = Storage::exists($path) 
-        ? json_decode(Storage::get($path), true) 
-        : [];
-
-    // Cari laporan berdasarkan ticket
-    $report = collect($allReports)->firstWhere('ticket', $ticket);
-
-    // Jika tidak ditemukan, tampilkan 404
-    abort_if(!$report, 404);
-
-    return view('pages.detaillaporan', [
-        'authMode' => true,
-        'userName' => 'Ari Rohyto',
-        'ticket' => $ticket,
-        'data' => $report,
-    ]);
-})->name('reports.show');
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});

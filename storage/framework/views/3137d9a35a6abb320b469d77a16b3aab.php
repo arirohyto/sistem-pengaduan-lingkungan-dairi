@@ -5,33 +5,45 @@
                 loading="lazy">
             <span class="text-gray-900 dark:text-white text-base md:text-lg font-bold tracking-tight">
                 Pemerintah Kabupaten Dairi </span> </a> </div>
-    <div class="hidden md:flex flex-1 justify-end items-center gap-6"> <?php
-        $linkBase = 'text-sm font-medium transition-colors';
-        $linkGuest = 'text-gray-700 dark:text-gray-300 hover:text-primary';
-    ?>
-        <?php if(!empty($authMode)): ?>
+    <div class="hidden md:flex flex-1 justify-end items-center gap-6">
+        <?php
+            $linkBase = 'text-sm font-medium transition-colors';
+            $linkGuest = 'text-gray-700 dark:text-gray-300 hover:text-primary';
+        ?>
+        
+        <?php if(auth()->guard()->check()): ?>
             <nav class="flex items-center gap-6">
-                <span
-                    class="text-sm font-semibold text-gray-800 dark:text-gray-200"><?php echo e($userName ?? 'Pengguna'); ?></span>
+                <span class="text-sm font-semibold text-gray-800 dark:text-gray-200"><?php echo e(Auth::user()->name); ?></span>
                 <a href="<?php echo e(route('home')); ?>"
                     class="<?php echo e($linkBase); ?> <?php echo e(request()->routeIs('home') ? 'text-primary' : $linkGuest); ?>">Home</a>
+                <a href="<?php echo e(route('laporan.index')); ?>"
+                    class="<?php echo e($linkBase); ?> <?php echo e(request()->routeIs('laporan.*') ? 'text-primary' : $linkGuest); ?>">Laporan Saya</a>
+                
+                <?php if(Auth::user()->isAdmin()): ?>
+                    <a href="<?php echo e(route('admin.dashboard')); ?>"
+                        class="<?php echo e($linkBase); ?> <?php echo e(request()->routeIs('admin.*') ? 'text-primary' : $linkGuest); ?>">Dashboard Admin</a>
+                <?php endif; ?>
             </nav>
-            <form method="POST" action="#" onsubmit="return false;">
+            
+            <form method="POST" action="<?php echo e(route('logout')); ?>">
                 <?php echo csrf_field(); ?>
-                <button type="button"
-                    class="rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90">
+                <button type="submit"
+                    class="rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
                     Logout
                 </button>
             </form>
-        <?php else: ?>
+        <?php endif; ?>
+        
+        <?php if(auth()->guard()->guest()): ?>
             <nav class="flex items-center gap-6">
                 <a href="<?php echo e(route('home')); ?>"
                     class="<?php echo e($linkBase); ?> <?php echo e(request()->routeIs('home') ? 'text-primary' : $linkGuest); ?>">Home</a>
                 <a href="<?php echo e(route('login')); ?>"
                     class="<?php echo e($linkBase); ?> <?php echo e(request()->routeIs('login') ? 'text-primary' : $linkGuest); ?>">Masuk</a>
             </nav>
+            
             <a href="<?php echo e(route('register')); ?>"
-                class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90">
+                class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
                 Daftar
             </a>
         <?php endif; ?>

@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Beranda'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -18,15 +16,16 @@
                 </p>
 
                 <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center pt-4">
-                    <a href="<?php echo e(route('reports.mine')); ?>"
+                    <a href="<?php echo e(route('laporan.index')); ?>"
                         class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90 transition-colors">
                         <span class="truncate">Cek Laporan</span>
                     </a>
-                    <a href="<?php echo e(route('reports.create')); ?>"
+                    <a href="<?php echo e(route('laporan.create')); ?>"
                         class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white dark:bg-gray-200 text-primary dark:text-primary font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 dark:hover:bg-gray-300 transition-colors text-base">
                         <span class="truncate">Buat Laporan Baru</span>
                     </a>
                 </div>
             </div>
-        </div> <?php $__env->stopSection(); ?>
+        </div>
+<?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/pages/beranda.blade.php ENDPATH**/ ?>

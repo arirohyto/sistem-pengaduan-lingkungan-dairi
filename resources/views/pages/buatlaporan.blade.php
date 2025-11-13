@@ -31,7 +31,7 @@
             </div>
             @endif
 
-            <form class="flex flex-col gap-8" action="{{ route('reports.store') }}" method="POST">
+            <form class="flex flex-col gap-8" action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <!-- Jenis Laporan -->
@@ -57,23 +57,46 @@
                 <div>
                     <h3 class="text-text-light dark:text-text-dark text-lg font-bold pb-4">Detail Laporan</h3>
                     <div class="flex flex-col gap-6">
+                        <!-- Lokasi -->
                         <label class="flex flex-col">
-                            <p class="text-text-light dark:text-text-dark text-base font-medium pb-2">Lokasi/Kecamatan</p>
-                            <select name="kecamatan"
+                            <p class="text-text-light dark:text-text-dark text-base font-medium pb-2">Lokasi</p>
+                            <select name="location_id" required
                                 class="form-select w-full rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-border-light dark:border-border-dark bg-white dark:bg-background-dark focus:border-primary h-14 bg-[image:--select-button-svg] p-[15px] text-base">
-                                <option value="">Pilih lokasi kejadian</option>
-                                <option value="Sidikalang" {{ old('kecamatan') == 'Sidikalang' ? 'selected' : '' }}>Sidikalang</option>
-                                <option value="Sumbul" {{ old('kecamatan') == 'Sumbul' ? 'selected' : '' }}>Sumbul</option>
-                                <option value="Tigalingga" {{ old('kecamatan') == 'Tigalingga' ? 'selected' : '' }}>Tigalingga</option>
-                                <option value="Berampu" {{ old('kecamatan') == 'Berampu' ? 'selected' : '' }}>Berampu</option>
+                                <option value="" disabled selected>Pilih Lokasi Kejadian</option>
+                                @if(isset($lokasis))
+                                    @foreach($lokasis as $lokasi)
+                                        <option value="{{ $lokasi->id }}" {{ old('location_id') == $lokasi->id ? 'selected' : '' }}>
+                                            {{ $lokasi->name }} - {{ $lokasi->area->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </label>
 
+                        <!-- Judul Laporan -->
                         <label class="flex flex-col">
-                            <p class="text-text-light dark:text-text-dark text-base font-medium pb-2">Deskripsi Laporan</p>
-                            <textarea name="deskripsi" rows="5"
+                            <p class="text-text-light dark:text-text-dark text-base font-medium pb-2">Judul Laporan</p>
+                            <input type="text" name="title" value="{{ old('title') }}" required
+                                placeholder="Contoh: Tumpukan sampah di pinggir jalan"
+                                class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-4 text-base text-text-light dark:text-text-dark placeholder:text-subtle-light dark:placeholder:text-subtle-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 h-14">
+                        </label>
+
+                        <!-- Deskripsi -->
+                        <label class="flex flex-col">
+                            <p class="text-text-light dark:text-text-dark text-base font-medium pb-2">Deskripsi Laporan dan Alamat Lengkap</p>
+                            <textarea name="description" rows="5" required
                                 class="form-textarea w-full resize-y rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-4 text-base text-text-light dark:text-text-dark placeholder:text-subtle-light dark:placeholder:text-subtle-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
-                                placeholder="Jelaskan pelanggaran yang Anda lihat secara rinci...">{{ old('deskripsi') }}</textarea>
+                                placeholder="Jelaskan alamat lengkap dan pelanggaran yang Anda lihat secara rinci...">{{ old('description') }}</textarea>
+                        </label>
+
+                        <!-- Upload Foto -->
+                        <label class="flex flex-col">
+                            <p class="text-text-light dark:text-text-dark text-base font-medium pb-2">Foto Bukti (Opsional)</p>
+                            <input type="file" name="photos[]" multiple accept="image/*"
+                                class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-4 text-base text-text-light dark:text-text-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 h-14">
+                            <p class="text-subtle-light dark:text-subtle-dark text-sm mt-1">
+                                Maksimal 3 foto, ukuran masing-masing maksimal 2MB
+                            </p>
                         </label>
                     </div>
                 </div>
