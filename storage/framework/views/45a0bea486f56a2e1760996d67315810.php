@@ -1,24 +1,25 @@
-@extends('layouts.app')
 
-@section('title', 'Detail Laporan')
 
-@push('styles')
+<?php $__env->startSection('title', 'Detail Laporan'); ?>
+
+<?php $__env->startPush('styles'); ?>
     <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
     </style>
-@endpush
+<?php $__env->stopPush(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 md:px-0 py-6 sm:py-8">
         <div class="flex items-center justify-between gap-2 mb-6">
             <h1
                 class="text-gray-900 dark:text-white text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter leading-tight">
-                Detail Laporan {{ isset($ticket) ? "#$ticket" : '' }}
+                Detail Laporan <?php echo e(isset($ticket) ? "#$ticket" : ''); ?>
+
             </h1>
-            <a href="{{ route('laporan.index') }}"
+            <a href="<?php echo e(route('laporan.index')); ?>"
                 class="rounded-lg h-9 px-3 sm:h-10 sm:px-4 bg-gray-100 dark:bg-gray-800 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">
                 Kembali
             </a>
@@ -39,7 +40,8 @@
                             Kode Laporan
                         </td>
                         <td class="w-2/3 px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                            {{ $laporan->code }}
+                            <?php echo e($laporan->code); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -48,7 +50,8 @@
                             Judul Laporan
                         </td>
                         <td class="w-2/3 px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                            {{ $laporan->title }}
+                            <?php echo e($laporan->title); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -57,7 +60,8 @@
                             Jenis Laporan
                         </td>
                         <td class="w-2/3 px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                            {{ $laporan->jenis_laporan == 'sampah' ? 'Sampah' : 'Lingkungan Hidup' }}
+                            <?php echo e($laporan->jenis_laporan == 'sampah' ? 'Sampah' : 'Lingkungan Hidup'); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -66,7 +70,8 @@
                             Lokasi
                         </td>
                         <td class="w-2/3 px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                            {{ $laporan->location->name ?? '-' }}
+                            <?php echo e($laporan->location->name ?? '-'); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -75,7 +80,8 @@
                             Deskripsi dan Alamat Lengkap
                         </td>
                         <td class="px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                            {{ $laporan->description }}
+                            <?php echo e($laporan->description); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -84,7 +90,8 @@
                             Tanggal Laporan
                         </td>
                         <td class="px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                            {{ $laporan->created_at->translatedFormat('d F Y') }}
+                            <?php echo e($laporan->created_at->translatedFormat('d F Y')); ?>
+
                         </td>
                     </tr>
                     <tr>
@@ -94,17 +101,18 @@
                         </td>
                         <td class="px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm">
                             <span
-                                class="inline-flex items-center px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-full {{ $laporan->status_badge['bg'] }} {{ $laporan->status_badge['text'] }}">
-                                {{ $laporan->status_label }}
+                                class="inline-flex items-center px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-bold rounded-full <?php echo e($laporan->status_badge['bg']); ?> <?php echo e($laporan->status_badge['text']); ?>">
+                                <?php echo e($laporan->status_label); ?>
+
                             </span>
                         </td>
                     </tr>
 
-                    @php
+                    <?php
                         $lastHistory = $laporan->riwayatStatus->first();
-                    @endphp
+                    ?>
 
-                    @if ($lastHistory && $lastHistory->note)
+                    <?php if($lastHistory && $lastHistory->note): ?>
                         <tr>
                             <td
                                 class="align-top px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-100">
@@ -114,39 +122,42 @@
                                 <div
                                     class="rounded-lg bg-gray-50 dark:bg-gray-800 p-3 sm:p-4 border border-gray-200 dark:border-gray-700 space-y-2">
                                     <p class="whitespace-pre-line leading-relaxed">
-                                        {{ $lastHistory->note }}
+                                        <?php echo e($lastHistory->note); ?>
+
                                     </p>
                                     <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400">
                                         Diupdate oleh
                                         <span class="font-medium">
-                                            {{ $lastHistory->user->name ?? 'Admin' }}
+                                            <?php echo e($lastHistory->user->name ?? 'Admin'); ?>
+
                                         </span>
                                         pada
                                         <span>
-                                            {{ $lastHistory->created_at?->translatedFormat('d F Y, H:i') }}
+                                            <?php echo e($lastHistory->created_at?->translatedFormat('d F Y, H:i')); ?>
+
                                         </span>
                                     </p>
                                 </div>
                             </td>
                         </tr>
-                    @endif
+                    <?php endif; ?>
 
                     <!-- Foto Lampiran -->
-                    @if ($laporan->lampiran->count() > 0)
+                    <?php if($laporan->lampiran->count() > 0): ?>
                         <tr>
                             <td class="align-top px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-100">Foto Bukti
                             </td>
                             <td class="px-4 py-3 sm:px-6 sm:py-4">
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                                    @foreach ($laporan->lampiran as $lampiran)
+                                    <?php $__currentLoopData = $laporan->lampiran; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lampiran): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <div class="relative group">
-                                            <img src="{{ asset('storage/' . $lampiran->file_path) }}" alt="Foto laporan"
+                                            <img src="<?php echo e(asset('storage/' . $lampiran->file_path)); ?>" alt="Foto laporan"
                                                 class="w-full h-24 sm:h-32 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
-                                                onclick="window.open('{{ asset('storage/' . $lampiran->file_path) }}', '_blank')">
+                                                onclick="window.open('<?php echo e(asset('storage/' . $lampiran->file_path)); ?>', '_blank')">
 
                                             <!-- Download button -->
-                                            <a href="{{ asset('storage/' . $lampiran->file_path) }}"
-                                                download="{{ $lampiran->file_name }}"
+                                            <a href="<?php echo e(asset('storage/' . $lampiran->file_path)); ?>"
+                                                download="<?php echo e($lampiran->file_name); ?>"
                                                 class="absolute bottom-2 right-2 bg-black/50 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                     viewBox="0 0 24 24">
@@ -156,7 +167,7 @@
                                                 </svg>
                                             </a>
                                         </div>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
 
                                 <!-- Info foto -->
@@ -165,7 +176,7 @@
                                 </p>
                             </td>
                         </tr>
-                    @else
+                    <?php else: ?>
                         <tr>
                             <td class="align-top px-6 py-4 text-sm font-medium text-gray-800 dark:text-gray-100">Foto Bukti
                             </td>
@@ -173,9 +184,11 @@
                                 Tidak ada foto bukti
                             </td>
                         </tr>
-                    @endif
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/pages/detaillaporan.blade.php ENDPATH**/ ?>

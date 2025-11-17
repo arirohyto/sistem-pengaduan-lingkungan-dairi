@@ -6,7 +6,7 @@
     <!-- Main Content -->
     <main class="flex-1 flex flex-col">
         <!-- Page Content Area -->
-        <div class="p-6">
+        <div class="p-4 sm:p-6">
             <!-- Error/Success Messages -->
             <?php if(session('success')): ?>
                 <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
@@ -32,70 +32,70 @@
                 </div>
             <?php endif; ?>
 
-            <div class="flex flex-wrap justify-between gap-3 mb-6">
-                <p class="text-zinc-900 dark:text-white text-3xl font-bold leading-tight tracking-tight">Dashboard Admin</p>
+            <div class="flex flex-wrap justify-between gap-2 mb-4">
+                <p class="text-zinc-900 dark:text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight">Dashboard Admin</p>
             </div>
 
             <!-- Statistics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-                <div class="bg-white dark:bg-zinc-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
-                    <div class="flex items-center justify-between">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6">
+                <div class="bg-white dark:bg-zinc-800 rounded-lg p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
+                    <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Total Laporan</p>
-                            <p class="text-2xl font-bold text-zinc-900 dark:text-white"><?php echo e($stats['total_laporan'] ?? 0); ?>
+                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total Laporan</p>
+                            <p class="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white"><?php echo e($stats['total_laporan'] ?? 0); ?>
 
                             </p>
                         </div>
-                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg">
-                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-300">description</span>
+                        <div class="bg-blue-100 dark:bg-blue-900 p-2 sm:p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-300 text-base sm:text-lg">description</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-zinc-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
-                    <div class="flex items-center justify-between">
+                <div class="bg-white dark:bg-zinc-800 rounded-lg p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
+                    <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Menunggu</p>
-                            <p class="text-2xl font-bold text-yellow-600"><?php echo e($stats['pending'] ?? 0); ?></p>
+                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Menunggu</p>
+                            <p class="text-xl sm:text-2x1 font-bold text-yellow-600"><?php echo e($stats['pending'] ?? 0); ?></p>
                         </div>
-                        <div class="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-lg">
-                            <span class="material-symbols-outlined text-yellow-600">schedule</span>
+                        <div class="bg-yellow-100 dark:bg-yellow-900 p-2 sm:p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-yellow-600 dark:text-yellow-300 text-base sm:text-lg">schedule</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-zinc-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
-                    <div class="flex items-center justify-between">
+                <div class="bg-white dark:bg-zinc-800 rounded-lg p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
+                    <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Diproses</p>
-                            <p class="text-2xl font-bold text-blue-600"><?php echo e($stats['diproses'] ?? 0); ?></p>
+                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Diproses</p>
+                            <p class="text-xl sm:text-2xl font-bold text-blue-600"><?php echo e($stats['diproses'] ?? 0); ?></p>
                         </div>
-                        <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg">
-                            <span class="material-symbols-outlined text-blue-600">autorenew</span>
+                        <div class="bg-blue-100 dark:bg-blue-900 p-2 sm:p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-blue-600 dark:text-blue-300 text-base sm:text-lg">autorenew</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-zinc-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
-                    <div class="flex items-center justify-between">
+                <div class="bg-white dark:bg-zinc-800 rounded-lg p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
+                    <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Selesai</p>
-                            <p class="text-2xl font-bold text-green-600"><?php echo e($stats['selesai'] ?? 0); ?></p>
+                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Selesai</p>
+                            <p class="text-xl sm:text-2xl font-bold text-green-600"><?php echo e($stats['selesai'] ?? 0); ?></p>
                         </div>
-                        <div class="bg-green-100 dark:bg-green-900 p-3 rounded-lg">
-                            <span class="material-symbols-outlined text-green-600">check_circle</span>
+                        <div class="bg-green-100 dark:bg-green-900 p-2 sm:p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-green-600 dark:text-green-300 text-base sm:text-lg">check_circle</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-zinc-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
-                    <div class="flex items-center justify-between">
+                <div class="bg-white dark:bg-zinc-800 rounded-lg p-3 sm:p-4 shadow-sm border border-gray-200 dark:border-zinc-700">
+                    <div class="flex items-center justify-between gap-3">
                         <div>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">Total User</p>
-                            <p class="text-2xl font-bold text-purple-600"><?php echo e($stats['total_users'] ?? 0); ?></p>
+                            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total User</p>
+                            <p class="text-xl text-2xl font-bold text-purple-600"><?php echo e($stats['total_users'] ?? 0); ?></p>
                         </div>
-                        <div class="bg-purple-100 dark:bg-purple-900 p-3 rounded-lg">
-                            <span class="material-symbols-outlined text-purple-600">people</span>
+                        <div class="bg-purple-100 dark:bg-purple-900 p-2 sm:p-3 rounded-lg">
+                            <span class="material-symbols-outlined text-purple-600 dark:text-purple-300 text-base sm:text-lg">people</span>
                         </div>
                     </div>
                 </div>
@@ -105,20 +105,16 @@
             <div
                 class="overflow-hidden rounded-xl border border-gray-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-sm">
                 <div class="overflow-x-auto">
-                    <table class="w-full">
+                    <table class="min-w-full text-left">
                         <thead class="bg-background-light dark:bg-background-dark">
                             <tr>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Kode</th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Judul</th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Pelapor
-                                </th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Lokasi
-                                </th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Tanggal
-                                </th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Status
-                                </th>
-                                <th class="px-4 py-3 text-left text-zinc-900 dark:text-white text-sm font-medium">Aksi</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-zinc-900 dark:text-white text-xs sm:text-sm font-medium">Kode</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-zinc-900 dark:text-white text-xs sm:text-sm font-medium">Judul</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-zinc-900 dark:text-white text-xs sm:text-sm font-medium">Pelapor</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-zinc-900 dark:text-white text-xs sm:text-sm font-medium">Lokasi</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-zinc-900 dark:text-white text-xs sm:text-sm font-medium">Tanggal</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-zinc-900 dark:text-white text-xs sm:text-sm font-medium">Status</th>
+                                <th class="px-3 py-2 sm:px-4 sm:py-3 text-left text-zinc-900 dark:text-white text-xs sm:text-sm font-medium">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-zinc-800">
@@ -131,43 +127,45 @@
                             <?php else: ?>
                                 <?php $__currentLoopData = $recentReports; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $report): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <tr class="hover:bg-gray-50 dark:hover:bg-zinc-800/50">
-                                        <td class="h-[72px] px-4 py-2 text-zinc-900 dark:text-white text-sm font-mono">
+                                        <td class="h-[60px] px-3 py-2 sm:px-4 sm:py-2 text-zinc-900 dark:text-white text-xs sm:text-sm font-mono">
                                             <?php echo e($report->code); ?>
 
                                         </td>
-                                        <td class="h-[72px] px-4 py-2 text-zinc-900 dark:text-white text-sm">
+                                        <td class="h-[60px] px-3 py-2 sm:px-4 sm:py-2 text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm">
                                             <?php echo e($report->title); ?>
 
                                         </td>
-                                        <td class="h-[72px] px-4 py-2 text-zinc-600 dark:text-zinc-400 text-sm">
+                                        <td class="h-[60px] px-3 py-2 sm:px-4 sm:py-2 text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm">
                                             <?php echo e($report->reporter_name ?? 'Anonim'); ?>
 
                                         </td>
-                                        <td class="h-[72px] px-4 py-2 text-zinc-600 dark:text-zinc-400 text-sm">
+                                        <td class="h-[60px] px-3 py-2 sm:px-4 sm:py-2 text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm">
                                             <?php echo e($report->location->name ?? '-'); ?>
 
                                         </td>
-                                        <td class="h-[72px] px-4 py-2 text-zinc-600 dark:text-zinc-400 text-sm">
+                                        <td class="h-[60px] px-3 py-2 sm:px-4 sm:py-2 text-zinc-600 dark:text-zinc-400 text-xs sm:text-sm">
                                             <?php echo e($report->created_at->translatedFormat('d M Y')); ?>
 
                                         </td>
                                         <td class="h-[72px] px-4 py-2">
                                             <span
-                                                class="inline-flex items-center justify-center rounded-full h-7 px-3 <?php echo e($report->status_badge['bg']); ?> <?php echo e($report->status_badge['text']); ?> text-xs font-medium">
+                                                class="inline-flex items-center justify-center rounded-full h-6 sm:h-7 px-2.5 sm:px-3 
+                                                    <?php echo e($report->status_badge['bg']); ?> <?php echo e($report->status_badge['text']); ?> 
+                                                    text-[11px] sm:text-xs font-medium">
                                                 <?php echo e($report->status_label); ?>
 
                                             </span>
                                         </td>
-                                        <td class="h-[72px] px-4 py-2">
-                                            <div class="flex items-center gap-2">
+                                        <td class="h-[60px] px-3 py-2 sm:px-4 sm:py-2">
+                                            <div class="flex items-center gap-1.5 sm:gap-2">
                                                 <a href="<?php echo e(route('admin.laporan.show', $report->id)); ?>"
-                                                    class="p-2 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700">
-                                                    <span class="material-symbols-outlined text-base">visibility</span>
+                                                    class="p-1.5 sm:p-2 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700">
+                                                    <span class="material-symbols-outlined text-sm sm:text-base">visibility</span>
                                                 </a>
                                                 <button
                                                     onclick="openStatusModal(<?php echo e($report->id); ?>, '<?php echo e($report->status); ?>')"
-                                                    class="p-2 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700">
-                                                    <span class="material-symbols-outlined text-base">edit</span>
+                                                    class="p-1.5 sm:p-2 rounded-lg text-zinc-600 dark:text-zinc-300 hover:bg-gray-200 dark:hover:bg-zinc-700">
+                                                    <span class="material-symbols-outlined text-sm sm:text-base">edit</span>
                                                 </button>
                                             </div>
                                         </td>

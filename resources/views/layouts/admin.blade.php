@@ -37,13 +37,18 @@
     @stack('styles')
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark">
-    <div class="flex min-h-screen">
+    <div class="flex flex-col md:flex-row min-h-screen">
         <!-- Sidebar Admin -->
-        <aside class="w-64 bg-white dark:bg-background-dark dark:border-r dark:border-gray-800 p-4 flex flex-col">
-            <div class="flex justify-center mb-6">
-                <img src="{{ asset('images/logo-dlh.png') }}" alt="Logo DLH Dairi" class="h-16 w-auto md:h-28 object-contain">
+        <aside
+            class="w-full md:w-64 bg-white dark:bg-background-dark
+                border-b md:border-b-0 md:dark:border-r dark:border-gray-800
+                p-4 flex flex-row md:flex-col items-center md:items-stretch gap-4 md:gap-0">
+            <div class="flex justify-center md:mb-6">
+                <img src="{{ asset('images/logo-dlh.png') }}" alt="Logo DLH Dairi"
+                    class="h-10 w-auto md:h-16 lg:h-20 object-contain">
             </div>
-            <nav class="flex flex-col gap-2 mt-4">
+
+            <nav class="flex flex-1 flex-row md:flex-col gap-2 md:mt-4">
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-primary/20 text-primary' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}" href="{{ route('admin.dashboard') }}">
                     <span class="material-symbols-outlined">dashboard</span>
                     <p class="text-sm font-medium">Dashboard</p>
@@ -73,7 +78,7 @@
             </header>
 
             <!-- Konten Halaman -->
-            <div class="p-6">
+            <div class="p-4 sm:p-6">
                 @yield('content')
             </div>
         </main>

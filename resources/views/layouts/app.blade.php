@@ -47,7 +47,7 @@
                 <div class="layout-content-container flex flex-col w-full max-w-5xl flex-1 px-4 sm:px-6 lg:px-8">
                     @include('layouts.navbar')
 
-                    <main class="flex-grow">
+                    <main class="mb-6">
                         @yield('content')
                     </main>
 

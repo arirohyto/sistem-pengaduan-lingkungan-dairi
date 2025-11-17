@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'Buat Laporan'); ?>
 
-@section('title', 'Buat Laporan')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class="px-4 sm:px-6 md:px-8 lg:px-10 xl:px-20 py-5">
         <div class="max-w-4xl w-full mx-auto">
             <!-- Heading -->
@@ -23,20 +21,20 @@
                 class="bg-white dark:bg-background-dark border border-border-light dark:border-border-dark rounded-lg shadow-sm p-6 sm:p-8">
 
                 <!-- Error Validation -->
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     <div
                         class="mb-6 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 text-sm">
                         <ul class="list-disc list-inside space-y-1">
-                            @foreach ($errors->all() as $err)
-                                <li>{{ $err }}</li>
-                            @endforeach
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $err): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li><?php echo e($err); ?></li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </ul>
                     </div>
-                @endif
+                <?php endif; ?>
 
-                <form class="flex flex-col gap-8" action="{{ route('laporan.store') }}" method="POST"
+                <form class="flex flex-col gap-8" action="<?php echo e(route('laporan.store')); ?>" method="POST"
                     enctype="multipart/form-data">
-                    @csrf
+                    <?php echo csrf_field(); ?>
 
                     <!-- Jenis Laporan -->
                     <div>
@@ -47,7 +45,7 @@
                                 <input type="radio" name="jenis_laporan" value="sampah"
                                     class="h-4 w-4 border border-border-light dark:border-border-dark rounded-full
                                         text-primary accent-primary focus:outline-none focus:ring-0"
-                                    {{ old('jenis_laporan', 'sampah') == 'sampah' ? 'checked' : '' }}>
+                                    <?php echo e(old('jenis_laporan', 'sampah') == 'sampah' ? 'checked' : ''); ?>>
                                 <p class="text-text-light dark:text-text-dark text-sm font-medium">Sampah</p>
                             </label>
                             <label
@@ -55,7 +53,7 @@
                                 <input type="radio" name="jenis_laporan" value="lingkungan"
                                     class="h-4 w-4 border border-border-light dark:border-border-dark rounded-full
                                         text-primary accent-primary focus:outline-none focus:ring-0"
-                                    {{ old('jenis_laporan') == 'lingkungan' ? 'checked' : '' }}>
+                                    <?php echo e(old('jenis_laporan') == 'lingkungan' ? 'checked' : ''); ?>>
                                 <p class="text-text-light dark:text-text-dark text-sm font-medium">Lingkungan Hidup</p>
                             </label>
                         </div>
@@ -74,20 +72,21 @@
                                         border border-border-light dark:border-border-dark bg-white dark:bg-background-dark focus:border-primary
                                         h-10 sm:h-11 bg-[image:--select-button-svg] px-3 sm:px-4">
                                     <option value="" disabled selected>Pilih Lokasi Kejadian</option>
-                                    @if(isset($lokasis))
-                                        @foreach($lokasis as $lokasi)
-                                            <option value="{{ $lokasi->id }}" {{ old('location_id') == $lokasi->id ? 'selected' : '' }}>
-                                                {{ $lokasi->name }}
+                                    <?php if(isset($lokasis)): ?>
+                                        <?php $__currentLoopData = $lokasis; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lokasi): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <option value="<?php echo e($lokasi->id); ?>" <?php echo e(old('location_id') == $lokasi->id ? 'selected' : ''); ?>>
+                                                <?php echo e($lokasi->name); ?>
+
                                             </option>
-                                        @endforeach
-                                    @endif
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
                                 </select>
                             </label>
 
                             <!-- Judul Laporan -->
                             <label class="flex flex-col">
                                 <p class="text-text-light dark:text-text-dark text-sm sm:text-base font-medium pb-2">Judul Laporan</p>
-                                <input type="text" name="title" value="{{ old('title') }}" required
+                                <input type="text" name="title" value="<?php echo e(old('title')); ?>" required
                                     placeholder="Contoh: Tumpukan sampah di pinggir jalan"
                                     class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark p-3 sm:p-4 text-sm sm:text-base text-text-light dark:text-text-dark placeholder:text-xs sm:placeholder:text-sm placeholder:text-subtle-light dark:placeholder:text-subtle-dark focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50 h-10 sm:h-14">
                             </label>
@@ -101,7 +100,7 @@
                                             p-3 sm:p-4 text-sm sm:text-base text-text-light dark:text-text-dark
                                             placeholder:text-xs sm:placeholder:text-sm placeholder:text-subtle-light dark:placeholder:text-subtle-dark
                                             focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
-                                    placeholder="Jelaskan alamat lengkap dan pelanggaran yang Anda lihat secara rinci...">{{ old('description') }}</textarea>
+                                    placeholder="Jelaskan alamat lengkap dan pelanggaran yang Anda lihat secara rinci..."><?php echo e(old('description')); ?></textarea>
                             </label>
 
                             <!-- Upload Foto -->
@@ -126,7 +125,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                            <label class="flex flex-col">
                                 <p class="text-text-light dark:text-text-dark text-sm sm:text-base font-medium pb-2">Nomor Telepon</p>
-                                <input type="tel" name="phone" value="{{ old('phone') }}"
+                                <input type="tel" name="phone" value="<?php echo e(old('phone')); ?>"
                                     placeholder="Contoh: 081234567890"
                                     class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark
                                         p-3 sm:p-4 text-sm sm:text-base text-text-light dark:text-text-dark
@@ -137,7 +136,7 @@
 
                             <label class="flex flex-col">
                                 <p class="text-text-light dark:text-text-dark text-sm sm:text-base font-medium pb-2">Email</p>
-                                <input type="email" name="email" value="{{ old('email') }}"
+                                <input type="email" name="email" value="<?php echo e(old('email')); ?>"
                                     placeholder="Contoh: nama@email.com"
                                     class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark
                                         p-3 sm:p-4 text-sm sm:text-base text-text-light dark:text-text-dark
@@ -159,4 +158,6 @@
             </div>
         </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/pages/buatlaporan.blade.php ENDPATH**/ ?>

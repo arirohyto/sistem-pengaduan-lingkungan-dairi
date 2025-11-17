@@ -1,6 +1,5 @@
-@extends('layouts.app')
-@section('title', 'Daftar')
-@section('content')
+<?php $__env->startSection('title', 'Daftar'); ?>
+<?php $__env->startSection('content'); ?>
     <div class="relative flex min-h-[70vh] w-full flex-col">
         <main class="flex justify-center px-4 py-8 sm:py-12 md:py-16">
             <div class="w-full max-w-lg space-y-8">
@@ -16,19 +15,19 @@
                 <div
                     class="flex flex-col gap-6 p-6 sm:p-8 border border-primary/30 rounded-lg bg-white dark:bg-black/20 shadow-sm">
 
-                    {{-- Error Messages --}}
-                    @if ($errors->any())
+                    
+                    <?php if($errors->any()): ?>
                         <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                             <ul class="text-sm text-red-600 dark:text-red-400 space-y-1">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li><?php echo e($error); ?></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
                         </div>
-                    @endif
+                    <?php endif; ?>
 
-                    <form class="flex flex-col gap-6" method="POST" action="{{ route('register') }}">
-                        @csrf
+                    <form class="flex flex-col gap-6" method="POST" action="<?php echo e(route('register')); ?>">
+                        <?php echo csrf_field(); ?>
 
                         <!-- Nama -->
                         <label class="flex flex-col w-full">
@@ -36,7 +35,7 @@
                             <input 
                                 type="text" 
                                 name="name" 
-                                value="{{ old('name') }}"
+                                value="<?php echo e(old('name')); ?>"
                                 placeholder="Masukkan nama lengkap Anda" 
                                 required 
                                 class="form-input w-full rounded text-text-dark dark:text-text-light
@@ -52,7 +51,7 @@
                             <input 
                                 type="email" 
                                 name="email" 
-                                value="{{ old('email') }}" 
+                                value="<?php echo e(old('email')); ?>" 
                                 placeholder="contoh@email.com"
                                 required
                                 class="form-input w-full rounded text-text-dark dark:text-text-light
@@ -68,7 +67,7 @@
                             <input 
                                 type="text" 
                                 name="phone" 
-                                value="{{ old('phone') }}" 
+                                value="<?php echo e(old('phone')); ?>" 
                                 placeholder="08123456789"
                                 required
                                 class="form-input w-full rounded text-text-dark dark:text-text-light
@@ -115,7 +114,7 @@
                         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
                             <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                                 Sudah punya akun?
-                                <a href="{{ route('login') }}" class="font-medium text-primary hover:underline">Masuk</a>
+                                <a href="<?php echo e(route('login')); ?>" class="font-medium text-primary hover:underline">Masuk</a>
                             </p>
                             <button
                                 type="submit"
@@ -128,4 +127,6 @@
                 </div>
             </div>
     </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/auth/register.blade.php ENDPATH**/ ?>
