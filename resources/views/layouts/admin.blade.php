@@ -42,10 +42,10 @@
         <aside
             class="w-full md:w-64 bg-white dark:bg-background-dark
                 border-b md:border-b-0 md:dark:border-r dark:border-gray-800
-                p-4 flex flex-row md:flex-col items-center md:items-stretch gap-4 md:gap-0">
+                p-4 flex flex-col items-center md:items-stretch gap-4 md:gap-0">
             <div class="flex justify-center md:mb-6">
                 <img src="{{ asset('images/logo-dlh.png') }}" alt="Logo DLH Dairi"
-                    class="h-10 w-auto md:h-16 lg:h-20 object-contain">
+                    class="w-40 h-auto md:w-44 lg:w-52 object-contain">
             </div>
 
             <nav class="flex flex-1 flex-row md:flex-col gap-2 md:mt-4">
@@ -66,7 +66,9 @@
             <header class="flex justify-between items-center gap-2 px-6 py-3 bg-primary text-white sticky top-0 z-10">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined">shield_person</span>
-                    <p class="text-sm font-medium">Admin - {{ auth()->user()?->name ?? 'Ari Rohyto' }}</p>
+                    <p class="text-sm font-medium">
+                        Admin - {{ auth()->user()->name ?? 'Admin' }}
+                    </p>
                 </div>
                 <form method="POST" action="{{ route('logout') }}" class="flex items-center gap-2">
                     @csrf
