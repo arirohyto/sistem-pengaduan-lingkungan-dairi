@@ -4,6 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title><?php echo $__env->yieldContent('title', 'Admin - SPPLH Dairi'); ?></title>
+    <link rel="icon" type="image/x-icon" href="<?php echo e(asset('favicon.ico')); ?>">
 
     <!-- Tailwind via CDN -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -53,6 +54,10 @@
                     <span class="material-symbols-outlined">dashboard</span>
                     <p class="text-sm font-medium">Dashboard</p>
                 </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg <?php echo e(request()->routeIs('admin.laporan.*') ? 'bg-primary/20 text-primary' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'); ?>" href="<?php echo e(route('admin.laporan.index')); ?>">
+                    <span class="material-symbols-outlined">description</span>
+                    <p class="text-sm font-medium">Manajemen Laporan</p>
+                </a>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg <?php echo e(request()->routeIs('admin.lokasi.*') ? 'bg-primary/20 text-primary' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'); ?>" href="<?php echo e(route('admin.lokasi.index')); ?>">
                     <span class="material-symbols-outlined">place</span>
                     <p class="text-sm font-medium">Manajemen Lokasi</p>
@@ -66,7 +71,10 @@
             <header class="flex justify-between items-center gap-2 px-6 py-3 bg-primary text-white sticky top-0 z-10">
                 <div class="flex items-center gap-2">
                     <span class="material-symbols-outlined">shield_person</span>
-                    <p class="text-sm font-medium">Admin - <?php echo e(auth()->user()?->name ?? 'Ari Rohyto'); ?></p>
+                    <p class="text-sm font-medium">
+                        Admin - <?php echo e(auth()->user()->name ?? 'Admin'); ?>
+
+                    </p>
                 </div>
                 <form method="POST" action="<?php echo e(route('logout')); ?>" class="flex items-center gap-2">
                     <?php echo csrf_field(); ?>

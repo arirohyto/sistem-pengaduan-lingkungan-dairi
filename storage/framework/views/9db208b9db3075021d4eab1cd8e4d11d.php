@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('title', 'Admin Dashboard - Sistem Pengaduan Lingkungan'); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -225,127 +223,44 @@
     <?php $__env->startPush('scripts'); ?>
         <script>
             function openStatusModal(reportId, currentStatus) {
-                console.log('🔄 Attempting to open modal for report:', reportId, 'status:', currentStatus);
+                const reportInput = document.getElementById('reportIdInput');
+                const statusSelect = document.getElementById('statusSelect');
+                const modal = document.getElementById('updateStatusModal');
 
-                setTimeout(function() {
-                    try {
-                        const reportInput = document.getElementById('reportIdInput');
-                        const statusSelect = document.getElementById('statusSelect');
-                        const modal = document.getElementById('updateStatusModal');
+                if (!reportInput || !statusSelect || !modal) {
+                    alert('Terjadi kesalahan. Silakan refresh halaman.');
+                    return;
+                }
 
-                        console.log('🔍 Elements found:');
-                        console.log('- reportInput:', reportInput);
-                        console.log('- statusSelect:', statusSelect);
-                        console.log('- modal:', modal);
-
-                        if (!reportInput) {
-                            console.error('❌ Element reportIdInput not found');
-                            alert('Error: Form input tidak ditemukan. Silakan refresh halaman.');
-                            return;
-                        }
-
-                        if (!statusSelect) {
-                            console.error('❌ Element statusSelect not found');
-                            alert('Error: Status select tidak ditemukan. Silakan refresh halaman.');
-                            return;
-                        }
-
-                        if (!modal) {
-                            console.error('❌ Element updateStatusModal not found');
-                            alert('Error: Modal tidak ditemukan. Silakan refresh halaman.');
-                            return;
-                        }
-
-                        // Set values
-                        reportInput.value = reportId;
-                        statusSelect.value = currentStatus;
-
-                        // Show modal
-                        modal.classList.remove('hidden');
-
-                        console.log('✅ Modal opened successfully');
-                        console.log('📝 Report ID set to:', reportInput.value);
-                        console.log('📝 Status set to:', statusSelect.value);
-
-                    } catch (error) {
-                        console.error('💥 Error in openStatusModal:', error);
-                        alert('Terjadi kesalahan: ' + error.message);
-                    }
-                }, 100); // Wait 100ms
+                reportInput.value = reportId;
+                statusSelect.value = currentStatus;
+                modal.classList.remove('hidden');
             }
 
             function closeStatusModal() {
-                console.log('🔄 Attempting to close modal');
-
-                try {
-                    const modal = document.getElementById('updateStatusModal');
-                    if (modal) {
-                        modal.classList.add('hidden');
-                        console.log('✅ Modal closed successfully');
-                    } else {
-                        console.error('❌ Modal not found when trying to close');
-                    }
-                } catch (error) {
-                    console.error('💥 Error in closeStatusModal:', error);
+                const modal = document.getElementById('updateStatusModal');
+                if (modal) {
+                    modal.classList.add('hidden');
                 }
             }
 
-            // DOM Ready
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('🚀 Dashboard JavaScript loaded');
+            document.addEventListener('DOMContentLoaded', function () {
+                const modal = document.getElementById('updateStatusModal');
 
-                // Check if all required elements exist
-                setTimeout(function() {
-                    const modal = document.getElementById('updateStatusModal');
-                    const reportInput = document.getElementById('reportIdInput');
-                    const statusSelect = document.getElementById('statusSelect');
-
-                    console.log('🔍 DOM Check:');
-                    console.log('- Modal exists:', !!modal);
-                    console.log('- Report input exists:', !!reportInput);
-                    console.log('- Status select exists:', !!statusSelect);
-
-                    if (!modal || !reportInput || !statusSelect) {
-                        console.error('❌ Some required elements are missing!');
-                        console.log('🔧 Please check if modal HTML is properly rendered');
-                    } else {
-                        console.log('✅ All required elements found');
-                    }
-
-                    // Count edit buttons
-                    const editButtons = document.querySelectorAll('button[onclick*="openStatusModal"]');
-                    console.log('🔘 Found edit buttons:', editButtons.length);
-
-                    // Add backup event listeners
-                    editButtons.forEach((button, index) => {
-                        button.addEventListener('click', function(e) {
-                            console.log(`🖱️ Edit button ${index} clicked via event listener`);
-                        });
-                    });
-
-                }, 500); // Wait 500ms for full DOM render
-
-                // Close modal when clicking outside
-                document.addEventListener('click', function(e) {
-                    const modal = document.getElementById('updateStatusModal');
+                // Tutup modal ketika klik di area gelap
+                document.addEventListener('click', function (e) {
                     if (modal && e.target === modal) {
                         closeStatusModal();
                     }
                 });
 
-                // Close modal with Escape key
-                document.addEventListener('keydown', function(e) {
+                // Tutup modal dengan tombol Escape
+                document.addEventListener('keydown', function (e) {
                     if (e.key === 'Escape') {
                         closeStatusModal();
                     }
                 });
             });
-
-            // Test function - call this in console to debug
-            function testModal() {
-                console.log('🧪 Testing modal elements...');
-                openStatusModal(999, 'pending');
-            }
         </script>
     <?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>

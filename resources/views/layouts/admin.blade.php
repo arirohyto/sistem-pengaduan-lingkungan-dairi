@@ -54,6 +54,10 @@
                     <span class="material-symbols-outlined">dashboard</span>
                     <p class="text-sm font-medium">Dashboard</p>
                 </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.laporan.*') ? 'bg-primary/20 text-primary' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}" href="{{ route('admin.laporan.index') }}">
+                    <span class="material-symbols-outlined">description</span>
+                    <p class="text-sm font-medium">Manajemen Laporan</p>
+                </a>
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.lokasi.*') ? 'bg-primary/20 text-primary' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}" href="{{ route('admin.lokasi.index') }}">
                     <span class="material-symbols-outlined">place</span>
                     <p class="text-sm font-medium">Manajemen Lokasi</p>
