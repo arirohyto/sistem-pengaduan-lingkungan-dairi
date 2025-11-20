@@ -49,7 +49,7 @@
                     class="w-40 h-auto md:w-44 lg:w-52 object-contain">
             </div>
 
-            <nav class="flex flex-1 flex-row md:flex-col gap-2 md:mt-4">
+            <nav class="flex flex-row flex-wrap md:flex-col gap-2 md:mt-4 w-full justify-center md:justify-start">
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-primary/20 text-primary' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}" href="{{ route('admin.dashboard') }}">
                     <span class="material-symbols-outlined">dashboard</span>
                     <p class="text-sm font-medium">Dashboard</p>
