@@ -99,10 +99,17 @@ class LaporanController extends Controller
             ->where('code', $reportCode)
             ->firstOrFail();
 
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
         // Check authorization
-        if (!Auth::check() || (!Auth::user()->isAdmin() && $laporan->reporter_id !== Auth::id())) {
-            abort(403, 'Anda tidak memiliki akses ke laporan ini.');
+        if (!$user) {
+        abort(403, 'Anda tidak memiliki akses ke laporan ini.');
         }
+
+    if (!$user->isAdmin() && (int) $laporan->reporter_id !== (int) $user->id) {
+        abort(403, 'Anda tidak memiliki akses ke laporan ini.');
+    }
 
         return view('pages.detaillaporan', compact('laporan'));
     }
