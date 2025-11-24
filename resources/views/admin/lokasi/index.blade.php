@@ -31,7 +31,7 @@
 
             <!-- Heading & Button -->
             <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-                <p class="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+                <p class="text-zinc-900 dark:text-white text-2xl sm:text-3xl font-bold leading-tight tracking-tight">
                     Manajemen Lokasi
                 </p>
                 <button id="btnOpenModal"

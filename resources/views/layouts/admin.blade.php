@@ -45,7 +45,7 @@
                 border-b md:border-b-0 md:dark:border-r dark:border-gray-800
                 p-4 flex flex-col items-center md:items-stretch gap-4 md:gap-0">
             <div class="flex justify-center md:mb-6">
-                <img src="{{ asset('images/logo-dlh.png') }}" alt="Logo DLH Dairi"
+                <img src="{{ asset('images/logopemerintahkabdairi.png') }}" alt="Logo Pemkab Dairi"
                     class="w-40 h-auto md:w-44 lg:w-52 object-contain">
             </div>
 
@@ -61,6 +61,10 @@
                 <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.lokasi.*') ? 'bg-primary/20 text-primary' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}" href="{{ route('admin.lokasi.index') }}">
                     <span class="material-symbols-outlined">place</span>
                     <p class="text-sm font-medium">Manajemen Lokasi</p>
+                </a>
+                <a class="flex items-center gap-3 px-3 py-2 rounded-lg {{ request()->routeIs('admin.users.*') ? 'bg-primary/20 text-primary' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800' }}" href="{{ route('admin.users.index') }}">
+                    <span class="material-symbols-outlined">group</span>
+                    <p class="text-sm font-medium">Manajemen User</p>
                 </a>
             </nav>
         </aside>

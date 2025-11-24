@@ -1,11 +1,8 @@
 <header
     class="flex items-center justify-between px-4 py-3 md:px-6 border-b border-gray-200 dark:border-gray-700 bg-white/70 dark:bg-background-dark/70 backdrop-blur">
     <div class="flex items-center gap-3"> <a href="<?php echo e(route('home')); ?>" class="flex items-center">
-            <img src="<?php echo e(asset('images/logo-dlh.png')); ?>" alt="Logo DLH Dairi" class="h-16 w-auto md:h-28 object-contain"
+            <img src="<?php echo e(asset('images/logopemerintahkabdairi.png')); ?>" alt="Logo Pemkab Dairi" class="h-16 w-auto md:h-28 object-contain"
                 loading="lazy">
-            <span class="text-gray-900 dark:text-white text-sm sm:text-base md:text-lg font-bold tracking-tight">
-                Pemerintah Kabupaten Dairi
-            </span>
         </a>
     </div>
 
@@ -52,7 +49,7 @@
             <form method="POST" action="<?php echo e(route('logout')); ?>" class="mt-2">
                 <?php echo csrf_field(); ?>
                 <button type="submit"
-                    class="w-full mt-1 rounded-lg h-9 px-3 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                    class="w-full mt-1 rounded-lg h-9 px-3 text-gray-700 dark:text-gray-300 text-sm font-bold hover:text-primary transition-colors">
                     Logout
                 </button>
             </form>
@@ -70,7 +67,7 @@
             </a>
 
             <a href="<?php echo e(route('register')); ?>"
-                class="mt-2 inline-flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                class="mt-2 inline-flex items-center justify-center rounded-lg h-9 px-4 text-gray-700 dark:text-gray-300 text-sm font-bold hover:text-primary transition-colors">
                 Daftar
             </a>
         <?php endif; ?>
@@ -102,7 +99,7 @@
             <form method="POST" action="<?php echo e(route('logout')); ?>">
                 <?php echo csrf_field(); ?>
                 <button type="submit"
-                    class="rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                    class="rounded-lg h-10 px-4 text-gray-700 dark:text-gray-300 text-sm font-bold hover:text-primary transition-colors">
                     Logout
                 </button>
             </form>
@@ -117,7 +114,7 @@
             </nav>
 
             <a href="<?php echo e(route('register')); ?>"
-                class="flex items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors">
+                class="flex items-center justify-center rounded-lg h-10 px-4 text-gray-700 dark:text-gray-300 text-sm font-bold hover:text-primary transition-colors">
                 Daftar
             </a>
         <?php endif; ?>
