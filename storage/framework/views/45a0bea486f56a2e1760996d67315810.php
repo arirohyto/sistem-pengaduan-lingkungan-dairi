@@ -3,9 +3,18 @@
 <?php $__env->startSection('title', 'Detail Laporan'); ?>
 
 <?php $__env->startPush('styles'); ?>
+    
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          crossorigin=""/>
+
     <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .leaflet-container {
+            font: 14px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
         }
     </style>
 <?php $__env->stopPush(); ?>
@@ -84,6 +93,17 @@
 
                         </td>
                     </tr>
+
+                    <!-- Peta Lokasi -->
+                    <tr>
+                        <td class="align-top px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-100">
+                            Lokasi Pelanggaran
+                        </td>
+                        <td class="px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                            Peta lokasi pelanggaran ditampilkan di bawah.
+                        </td>
+                    </tr>
+
                     <tr>
                         <td
                             class="align-top px-4 py-3 sm:px-6 sm:py-4 text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-100">
@@ -188,7 +208,35 @@
                 </tbody>
             </table>
         </div>
-    </div>
-<?php $__env->stopSection(); ?>
 
+        <?php if($laporan->latitude && $laporan->longitude): ?>
+            <div class="mt-4 bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl">
+                <div class="px-4 sm:px-6 py-4 sm:py-5">
+                    <p class="text-text-light dark:text-text-dark text-sm sm:text-base font-medium pb-2">
+                        Lokasi Pelanggaran
+                    </p>
+
+                    <?php
+                        $lat = $laporan->latitude;
+                        $lng = $laporan->longitude;
+                        $apiKey = env('STADIA_MAPS_API_KEY', '77c0627e-19e5-4af5-9463-9965f56fb72e');
+                        $staticMapUrl = "https://tiles.stadiamaps.com/staticmap?api_key={$apiKey}&center={$lat},{$lng}&zoom=16&size=600x300&style=alidade_smooth";
+                        $osmUrl = "https://www.openstreetmap.org/?mlat={$lat}&mlon={$lng}#map=16/{$lat}/{$lng}";
+                    ?>
+
+                    <a href="<?php echo e($osmUrl); ?>" target="_blank" class="block rounded-lg overflow-hidden border border-border-light dark:border-border-dark">
+                        <img src="<?php echo e($staticMapUrl); ?>"
+                             alt="Peta lokasi pelanggaran"
+                             class="w-full h-auto"
+                             onerror="this.onerror=null; this.src='<?php echo e(asset('images/placeholder-map.png')); ?>';">
+                    </a>
+
+                    <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-2">
+                        Lokasi pelanggaran berdasarkan laporan pengguna. Klik peta untuk membuka di OpenStreetMap.
+                    </p>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php $__env->stopSection(); ?> 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/pages/detaillaporan.blade.php ENDPATH**/ ?>

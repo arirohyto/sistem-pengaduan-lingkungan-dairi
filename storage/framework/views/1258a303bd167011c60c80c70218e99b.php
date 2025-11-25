@@ -103,16 +103,37 @@
                                     placeholder="Jelaskan alamat lengkap dan pelanggaran yang Anda lihat secara rinci..."><?php echo e(old('description')); ?></textarea>
                             </label>
 
+                            <!-- Peta dan Drop Pin -->
+                            <div class="flex flex-col">
+                                <p class="text-text-light dark:text-text-dark text-sm sm:text-base font-medium pb-2">
+                                    Pilih Lokasi Pelanggaran
+                                </p>
+                                <div class="flex gap-2 mb-2">
+                                    <button type="button" id="useMyLocation" class="text-xs sm:text-sm px-3 py-1 bg-primary text-white rounded-lg">
+                                        Gunakan Lokasi Saya
+                                    </button>
+                                    <span class="text-xs text-subtle-light dark:text-subtle-dark self-center">
+                                        atau klik di peta
+                                    </span>
+                                </div>
+                                <div id="map" class="rounded-lg border border-border-light dark:border-border-dark w-full h-64 sm:h-80"></div>
+                                <input type="hidden" id="latitude" name="latitude" value="<?php echo e(old('latitude')); ?>">
+                                <input type="hidden" id="longitude" name="longitude" value="<?php echo e(old('longitude')); ?>">
+                                <p class="text-subtle-light dark:text-subtle-dark text-xs sm:text-sm mt-1">
+                                    Klik di peta untuk menandai lokasi pelanggaran, atau klik tombol di atas untuk menggunakan lokasi saat ini.
+                                </p>
+                            </div>
+
                             <!-- Upload Foto -->
                             <label class="flex flex-col">
-                                <p class="text-text-light dark:text-text-dark text-sm sm:text-base font-medium pb-2">Foto Bukti (Opsional)</p>
-                                <input type="file" name="photos[]" multiple accept="image/*"
+                                <p class="text-text-light dark:text-text-dark text-sm sm:text-base font-medium pb-2">Foto Bukti</p>
+                                <input type="file" name="photos[]" multiple accept="image/*" required
                                     class="form-input w-full rounded-lg border border-border-light dark:border-border-dark bg-white dark:bg-background-dark
                                             p-3 sm:p-4 text-sm sm:text-base text-text-light dark:text-text-dark
                                             focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50
                                             h-10 sm:h-14">
                                 <p class="text-subtle-light dark:text-subtle-dark text-xs sm:text-sm mt-1">
-                                    Maksimal 3 foto, ukuran masing-masing maksimal 2MB
+                                    Minimal 1 foto, Maksimal 3 foto, ukuran masing-masing maksimal 2MB
                                 </p>
                             </label>
                         </div>
@@ -158,6 +179,72 @@
             </div>
         </div>
     </div>
-<?php $__env->stopSection(); ?>
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <script>
+        // Inisialisasi peta
+        let map = L.map('map').setView([-2.4967, 98.4444], 12); // Koordinat Dairi
+
+        // Tambahkan layer peta dari OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let marker = null;
+
+        // Fungsi saat peta diklik
+        map.on('click', function(e) {
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker(e.latlng).addTo(map);
+            document.getElementById('latitude').value = e.latlng.lat;
+            document.getElementById('longitude').value = e.latlng.lng;
+        });
+
+        // Fungsi untuk mendapatkan lokasi pengguna
+        document.getElementById('useMyLocation').addEventListener('click', function() {
+            if (!navigator.geolocation) {
+                alert('Browser Anda tidak mendukung geolokasi.');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+
+                    // Hapus marker lama jika ada
+                    if (marker) {
+                        map.removeLayer(marker);
+                    }
+
+                    // Tandai lokasi pengguna
+                    marker = L.marker([lat, lng]).addTo(map);
+                    map.setView([lat, lng], 15);
+
+                    // Simpan ke form
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+                },
+                function(error) {
+                    alert('Tidak dapat mendapatkan lokasi Anda: ' + error.message);
+                }
+            );
+        });
+
+        // Jika sudah ada latitude dan longitude dari old(), maka tampilkan marker
+        const lat = document.getElementById('latitude').value;
+        const lng = document.getElementById('longitude').value;
+        if (lat && lng) {
+            marker = L.marker([parseFloat(lat), parseFloat(lng)]).addTo(map);
+            map.setView([parseFloat(lat), parseFloat(lng)], 15);
+        }
+    </script>
+<?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\laragon\www\sistem-pengaduan-lingkungan\resources\views/pages/buatlaporan.blade.php ENDPATH**/ ?>

@@ -69,12 +69,13 @@
                         <p class="text-gray-900 dark:text-white text-sm sm:text-base font-medium leading-normal pb-2">Lokasi Kejadian
                         </p>
                         <div
-                            class="flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg
-                                    bg-background-light dark:bg-background-dark
-                                    min-h-10 sm:h-12 md:h-14
-                                    px-3 sm:px-4 py-2
-                                    text-sm sm:text-base font-normal leading-normal text-gray-700 dark:text-gray-300 items-center">
-                            {{ $laporan->location->name ?? '-' }}
+                            class="flex w-full min-w-0 flex-1 flex-col
+                                rounded-lg bg-background-light dark:bg-background-dark
+                                min-h-10 sm:h-auto px-3 sm:px-4 py-2 gap-2">
+                            {{-- Nama lokasi --}}
+                            <span class="text-sm sm:text-base text-gray-700 dark:text-gray-300">
+                                {{ $laporan->location->name ?? '-' }}
+                            </span>
                         </div>
                     </div>
 
@@ -114,6 +115,35 @@
                             {{ $laporan->description }}
                         </div>
                     </div>
+
+                    {{-- Lokasi Pelanggaran --}}
+                    @if ($laporan->latitude && $laporan->longitude)
+                        <div class="flex flex-col md:col-span-2">
+                            <p class="text-gray-900 dark:text-white text-sm sm:text-base font-medium leading-normal pb-2">
+                                Lokasi Pelanggaran
+                            </p>
+
+                            @php
+                                $lat = $laporan->latitude;
+                                $lng = $laporan->longitude;
+                                $apiKey = env('STADIA_MAPS_API_KEY', '77c0627e-19e5-4af5-9463-9965f56fb72e');
+                                $staticMapUrl = "https://tiles.stadiamaps.com/staticmap?api_key={$apiKey}&center={$lat},{$lng}&zoom=16&size=600x300&style=alidade_smooth";
+                                $osmUrl = "https://www.openstreetmap.org/?mlat={$lat}&mlon={$lng}#map=16/{$lat}/{$lng}";
+                            @endphp
+
+                            <a href="{{ $osmUrl }}" target="_blank"
+                                class="block max-w-md sm:max-w-lg mx-auto rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+                                    <img src="{{ $staticMapUrl }}"
+                                        alt="Peta lokasi pelanggaran"
+                                        class="w-full h-40 sm:h-52 object-cover"
+                                        onerror="this.onerror=null; this.src='{{ asset('images/placeholder-map.png') }}';">
+                            </a>
+
+                            <p class="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                Lokasi pelanggaran berdasarkan laporan pengguna. Klik peta untuk membuka di OpenStreetMap.
+                            </p>
+                        </div>
+                    @endif
 
                     <!-- Status -->
                     <div class="flex flex-col">
